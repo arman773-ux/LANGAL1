@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="bn">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎙️ বাংলা TTS - Quick Access</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            font-size: 3em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            transition: all 0.3s;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .card-icon {
+            font-size: 4em;
+            margin-bottom: 15px;
+        }
+
+        .card h2 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 1.5em;
+        }
+
+        .card p {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        .badge.new {
+            background: #ff4081;
+            color: white;
+        }
+
+        .badge.simple {
+            background: #4caf50;
+            color: white;
+        }
+
+        .badge.advanced {
+            background: #9c27b0;
+            color: white;
+        }
+
+        .info-box {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 25px;
+            margin-top: 20px;
+        }
+
+        .info-box h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+
+        .info-box ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .info-box li {
+            padding: 8px 0;
+            color: #555;
+            line-height: 1.6;
+        }
+
+        .info-box li:before {
+            content: "✓ ";
+            color: #4caf50;
+            font-weight: bold;
+            margin-right: 8px;
+        }
+
+        .footer {
+            text-align: center;
+            color: white;
+            margin-top: 40px;
+            opacity: 0.8;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎙️ বাংলা TTS সিস্টেম</h1>
+            <p>টেক্সট থেকে স্বর - সহজে এবং দ্রুত</p>
+        </div>
+
+        <div class="cards">
+            <div class="card" onclick="openPage('tts-test.html')">
+                <div class="card-icon">⚡</div>
+                <h2>দ্রুত টেস্ট</h2>
+                <p>সাধারণ ব্রাউজার TTS দিয়ে তাৎক্ষণিক টেস্ট করুন। কোন লগইন লাগবে না।</p>
+                <span class="badge simple">সহজ</span>
+            </div>
+
+            <div class="card" onclick="openApp('/tts-demo')">
+                <div class="card-icon">✨</div>
+                <h2>AI TTS ডেমো</h2>
+                <p>উচ্চমানের Hugging Face AI মডেল দিয়ে টেস্ট করুন। সবচেয়ে ভালো মান।</p>
+                <span class="badge advanced">Advanced</span>
+                <span class="badge new">নতুন!</span>
+            </div>
+
+            <div class="card" onclick="openApp('/')">
+                <div class="card-icon">🏠</div>
+                <h2>মূল অ্যাপ</h2>
+                <p>লাঙ্গল কৃষি সহায়ক অ্যাপ্লিকেশনে যান। সব ফিচার ব্যবহার করুন।</p>
+                <span class="badge simple">Dashboard</span>
+            </div>
+        </div>
+
+        <div class="info-box">
+            <h3>🎯 TTS সিস্টেমের বৈশিষ্ট্য</h3>
+            <ul>
+                <li><strong>দ্রুত টেস্ট:</strong> ব্রাউজার TTS - কোন সেটআপ লাগবে না, অফলাইন কাজ করে</li>
+                <li><strong>AI TTS:</strong> Meta's MMS মডেল - প্রাকৃতিক বাংলা উচ্চারণ</li>
+                <li><strong>স্বয়ংক্রিয় Fallback:</strong> AI ব্যর্থ হলে ব্রাউজার TTS ব্যবহার হবে</li>
+                <li><strong>রিয়েল-টাইম স্ট্যাটাস:</strong> Loading, playing, progress দেখায়</li>
+                <li><strong>সহজ ব্যবহার:</strong> একটি ক্লিকেই শুরু</li>
+                <li><strong>কাস্টমাইজেবল:</strong> Rate, pitch, volume নিয়ন্ত্রণ</li>
+            </ul>
+        </div>
+
+        <div class="info-box" style="margin-top: 20px;">
+            <h3>📚 সহায়ক লিংক</h3>
+            <ul style="list-style: none; padding: 0;">
+                <li style="padding: 10px 0; border-bottom: 1px solid #eee;">
+                    <a href="/BANGLA_TTS_GUIDE.md" style="color: #667eea; font-weight: bold;">
+                        📖 সম্পূর্ণ গাইড (Markdown)
+                    </a>
+                </li>
+                <li style="padding: 10px 0; border-bottom: 1px solid #eee;">
+                    <a href="/TTS_IMPLEMENTATION_SUMMARY.md" style="color: #667eea; font-weight: bold;">
+                        ⚡ দ্রুত সারাংশ (Markdown)
+                    </a>
+                </li>
+                <li style="padding: 10px 0;">
+                    <a href="https://huggingface.co/settings/tokens" target="_blank"
+                        style="color: #667eea; font-weight: bold;">
+                        🔑 Hugging Face API Key (External)
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="footer">
+            <p>তৈরি করেছেন ❤️ দিয়ে লাঙ্গল টিম</p>
+            <p style="font-size: 0.9em; margin-top: 10px;">© 2025 লাঙ্গল কৃষি সহায়ক</p>
+        </div>
+    </div>
+
+    <script>
+        function openPage(page) {
+            window.location.href = page;
+        }
+
+        function openApp(route) {
+            // For production with basename
+            const basename = '';
+            window.location.href = basename + route;
+        }
+
+        // Show a welcome message
+        window.onload = () => {
+            console.log('🎙️ বাংলা TTS সিস্টেম লোড হয়েছে!');
+            console.log('দ্রুত টেস্ট: tts-test.html');
+            console.log('AI TTS ডেমো: /tts-demo');
+            console.log('মূল অ্যাপ: /');
+        };
+    </script>
+</body>
+
+</html>
