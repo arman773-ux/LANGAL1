@@ -1,0 +1,465 @@
+import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { TTSButton } from "@/components/ui/tts-button";
+import { Header } from "@/components/layout/Header";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { useAuth } from "@/contexts/AuthContext";
+import {
+    Users,
+    MapPin,
+    Droplets,
+    Wind,
+    Loader2,
+    Sun,
+    Moon,
+    Cloud,
+    CloudRain,
+    CloudSun,
+    CloudMoon,
+    ChevronRight,
+    CheckCircle,
+    Clock
+} from "lucide-react";
+import {
+    fetchWeatherOneCall,
+    processWeatherData,
+    getLocationName,
+    toBengaliNumber,
+    CompleteWeatherData
+} from "@/services/weatherService";
+import { getProfilePhotoUrl } from "@/lib/utils";
+import { getExpertStats } from "@/services/consultationService";
+
+// Import dashboard icons
+import socialFeedIcon from "@/assets/dashboard-icons/social-feed.png";
+import diagnosisIcon from "@/assets/dashboard-icons/diagnosis.png";
+import weatherIcon from "@/assets/dashboard-icons/weather.png";
+import newsIcon from "@/assets/dashboard-icons/news.png";
+import consultationIcon from "@/assets/dashboard-icons/consultation.png";
+
+const ExpertDashboard = () => {
+    const navigate = useNavigate();
+    const { user } = useAuth();
+
+    // Weather state
+    const [weatherData, setWeatherData] = useState<CompleteWeatherData | null>(null);
+    const [weatherLocation, setWeatherLocation] = useState<string>("");
+    const [weatherLoading, setWeatherLoading] = useState(true);
+    const [weatherError, setWeatherError] = useState<string | null>(null);
+
+    // Expert stats
+    const [totalConsultations, setTotalConsultations] = useState<number>(0);
+    const [completedConsultations, setCompletedConsultations] = useState<number>(0);
+    const [specialization, setSpecialization] = useState<string>("");
+    const [statsLoading, setStatsLoading] = useState(true);
+
+    // রাত কিনা চেক করার হেল্পার
+    const isNightTime = (): boolean => {
+        const hour = new Date().getHours();
+        return hour < 6 || hour >= 18;
+    };
+
+    // Weather icon helper - দিন/রাত অনুযায়ী
+    const getWeatherIcon = (condition: string) => {
+        const c = condition.toLowerCase();
+        const isNight = isNightTime();
+
+        if (c.includes('পরিষ্কার') || c.includes('clear')) {
+            return isNight
+                ? <Moon className="h-10 w-10 text-indigo-400" />
+                : <Sun className="h-10 w-10 text-amber-500" />;
+        }
+        if (c.includes('বৃষ্টি') || c.includes('rain')) return <CloudRain className="h-10 w-10 text-blue-500" />;
+        if (c.includes('মেঘ') && c.includes('হালকা')) {
+            return isNight
+                ? <CloudMoon className="h-10 w-10 text-slate-400" />
+                : <CloudSun className="h-10 w-10 text-gray-400" />;
+        }
+        if (c.includes('মেঘ')) {
+            return isNight
+                ? <CloudMoon className="h-10 w-10 text-slate-400" />
+                : <CloudSun className="h-10 w-10 text-gray-400" />;
+        }
+        return <Cloud className="h-10 w-10 text-gray-400" />;
+    };
+
+    // বাংলা তারিখ ফরম্যাট
+    const formatBanglaDate = () => {
+        const banglaMonths = [
+            'জানুয়ারি', 'ফেব্রুয়ারি', 'মার্চ', 'এপ্রিল', 'মে', 'জুন',
+            'জুলাই', 'আগস্ট', 'সেপ্টেম্বর', 'অক্টোবর', 'নভেম্বর', 'ডিসেম্বর'
+        ];
+        const today = new Date();
+        const day = toBengaliNumber(today.getDate());
+        const month = banglaMonths[today.getMonth()];
+        const year = toBengaliNumber(today.getFullYear());
+        return `${day} ই ${month}, ${year}`;
+    };
+
+    // Fetch expert stats from database
+    useEffect(() => {
+        const fetchExpertStats = async () => {
+            try {
+                setStatsLoading(true);
+                const response = await getExpertStats();
+                if (response.success && response.data) {
+                    setTotalConsultations(response.data.total_appointments || 0);
+                    setCompletedConsultations(response.data.completed_appointments || 0);
+                    setSpecialization(response.data.specialization_bn || response.data.specialization || "");
+                }
+            } catch (error) {
+                console.error("Expert stats fetch error:", error);
+            } finally {
+                setStatsLoading(false);
+            }
+        };
+
+        fetchExpertStats();
+    }, []);
+
+    // Fetch weather on mount using GPS
+    useEffect(() => {
+        const fetchWeather = async () => {
+            setWeatherLoading(true);
+            setWeatherError(null);
+
+            if (!navigator.geolocation) {
+                setWeatherError("GPS সমর্থিত নয়");
+                setWeatherLoading(false);
+                return;
+            }
+
+            navigator.geolocation.getCurrentPosition(
+                async (position) => {
+                    try {
+                        const { latitude, longitude } = position.coords;
+                        const locationName = await getLocationName(latitude, longitude);
+                        const rawData = await fetchWeatherOneCall(latitude, longitude);
+                        const processed = processWeatherData(rawData, locationName);
+
+                        setWeatherData(processed);
+                        setWeatherLocation(locationName);
+                    } catch (error) {
+                        console.error("Weather fetch error:", error);
+                        setWeatherError("আবহাওয়া লোড করতে সমস্যা");
+                    } finally {
+                        setWeatherLoading(false);
+                    }
+                },
+                (error) => {
+                    console.error("GPS error:", error);
+                    setWeatherError("অবস্থান পাওয়া যায়নি");
+                    setWeatherLoading(false);
+                },
+                { enableHighAccuracy: true, timeout: 10000 }
+            );
+        };
+
+        fetchWeather();
+    }, []);
+
+    // ড্যাশবোর্ড আইকন এবং রুট ম্যাপিং - Expert এর জন্য ৫ টি মেনু
+    const dashboardItems = [
+        {
+            id: "social",
+            title: "সামাজিক ফিড",
+            description: "কৃষক ও বিশেষজ্ঞদের সাথে যোগাযোগ করুন",
+            image: socialFeedIcon,
+            route: "/social-feed",
+            color: "bg-blue-500",
+            stats: "২৪৫ নতুন পোস্ট"
+        },
+        {
+            id: "consultation",
+            title: "পরামর্শ",
+            description: "কৃষকদের পরামর্শ দিন",
+            image: consultationIcon,
+            route: "/consultation/dashboard",
+            color: "bg-indigo-500",
+            stats: "২৪/৭ সেবা"
+        },
+        // {
+        //     id: "agricultural-news",
+        //     title: "কৃষি সংবাদ",
+        //     description: "কৃষি বিষয়ক সংবাদ ও তথ্য",
+        //     image: newsIcon,
+        //     route: "/agricultural-news",
+        //     color: "bg-amber-500",
+        //     stats: "নতুন সংবাদ"
+        // },
+        {
+            id: "weather",
+            title: "আবহাওয়া পূর্বাভাস",
+            description: "আবহাওয়ার পূর্বাভাস ও কৃষি পরামর্শ",
+            image: weatherIcon,
+            route: "/abhaowa-purbabhas",
+            color: "bg-orange-500",
+            stats: "৭ দিনের পূর্বাভাস"
+        },
+        {
+            id: "diagnosis",
+            title: "রোগ নির্ণয়",
+            description: "ফসলের রোগ শনাক্ত করুন",
+            image: diagnosisIcon,
+            route: "/diagnosis",
+            color: "bg-red-500",
+            stats: "AI সহায়তা"
+        }
+    ];
+
+    const handleNavigation = (route: string) => {
+        navigate(route);
+    };
+
+    return (
+        <div className="min-h-screen bg-background">
+            <Header />
+            <main className="p-4 pb-20 space-y-4 pt-20 max-w-3xl mx-auto">
+                {/* ১. স্বাগত বার্তা with Profile Picture - Glassmorphism Hero Section */}
+                <Card className="border border-blue-200/50 bg-blue-50/60 dark:bg-blue-950/30 backdrop-blur-md shadow-lg overflow-hidden">
+                    <CardContent className="p-5 relative">
+                        {/* Decorative circles */}
+                        <div className="absolute -right-8 -top-8 w-32 h-32 bg-blue-200/30 dark:bg-blue-400/10 rounded-full blur-sm"></div>
+                        <div className="absolute -right-4 top-12 w-20 h-20 bg-blue-300/20 dark:bg-blue-500/10 rounded-full blur-sm"></div>
+
+                        <div className="flex items-center gap-4 relative z-10">
+                            <div className="relative">
+                                <Avatar className="h-16 w-16 border-2 border-blue-400/40 shadow-lg ring-2 ring-blue-300/30">
+                                    <AvatarImage src={getProfilePhotoUrl(user?.profilePhoto)} alt={user?.name} />
+                                    <AvatarFallback className="bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 text-xl font-bold">
+                                        {user?.name?.charAt(0)?.toUpperCase() || 'E'}
+                                    </AvatarFallback>
+                                </Avatar>
+                                {user?.verificationStatus && (
+                                    <>
+                                        {user.verificationStatus === 'approved' && (
+                                            <div className="absolute -bottom-1 -right-1 bg-green-500 rounded-full p-1 shadow-md">
+                                                <CheckCircle className="h-4 w-4 text-white" />
+                                            </div>
+                                        )}
+                                        {user.verificationStatus === 'pending' && (
+                                            <div className="absolute -bottom-1 -right-1 bg-yellow-500 rounded-full p-1 shadow-md">
+                                                <Clock className="h-4 w-4 text-white" />
+                                            </div>
+                                        )}
+                                        {user.verificationStatus === 'rejected' && (
+                                            <div className="absolute -bottom-1 -right-1 bg-red-500 rounded-full p-1 shadow-md">
+                                                <Clock className="h-4 w-4 text-white" />
+                                            </div>
+                                        )}
+                                    </>
+                                )}
+                            </div>
+                            <div className="flex-1">
+                                <p className="text-blue-600 dark:text-blue-400 text-sm font-medium">স্বাগতম,</p>
+                                <h1 className="text-2xl font-bold tracking-tight text-blue-800 dark:text-blue-100">{user?.name || 'কৃষি বিশেষজ্ঞ'}</h1>
+                                <div className="flex items-center gap-2 mt-1">
+                                    <Badge className="bg-blue-200/60 dark:bg-blue-800/60 text-blue-700 dark:text-blue-200 border-0 text-xs">
+                                        কৃষি বিশেষজ্ঞ
+                                    </Badge>
+                                </div>
+                            </div>
+                            <div className="text-right bg-white/50 dark:bg-blue-900/40 backdrop-blur-sm rounded-lg px-3 py-2 border border-blue-200/50">
+                                <p className="text-xs text-blue-600 dark:text-blue-400">আজকের তারিখ</p>
+                                <p className="text-lg font-semibold text-blue-800 dark:text-blue-100">{formatBanglaDate()}</p>
+                            </div>
+                        </div>
+                    </CardContent>
+                </Card>
+
+                {/* ২. পরিসংখ্যান কার্ড */}
+                <div className="grid grid-cols-2 gap-3">
+                    {/* মোট পরামর্শ */}
+                    <Card className="border">
+                        <CardContent className="p-4">
+                            <div className="flex items-center gap-3">
+                                <div className="p-2 rounded-lg bg-blue-50 dark:bg-blue-950">
+                                    <Users className="h-5 w-5 text-blue-600" />
+                                </div>
+                                <div>
+                                    <p className="text-xs text-muted-foreground">মোট পরামর্শ</p>
+                                    {statsLoading ? (
+                                        <Loader2 className="h-5 w-5 animate-spin text-blue-600" />
+                                    ) : (
+                                        <p className="text-lg font-semibold">{toBengaliNumber(completedConsultations)} টি</p>
+                                    )}
+                                </div>
+                            </div>
+                        </CardContent>
+                    </Card>
+
+                    {/* বিশেষত্ব */}
+                    <Card className="border">
+                        <CardContent className="p-4">
+                            <div className="flex items-center gap-3">
+                                <div className="p-2 rounded-lg bg-green-50 dark:bg-green-950">
+                                    <CheckCircle className="h-5 w-5 text-green-600" />
+                                </div>
+                                <div>
+                                    <p className="text-xs text-muted-foreground">বিশেষত্ব</p>
+                                    {statsLoading ? (
+                                        <Loader2 className="h-5 w-5 animate-spin text-green-600" />
+                                    ) : (
+                                        <p className="text-sm font-semibold line-clamp-1">
+                                            {specialization || "তথ্য নেই"}
+                                        </p>
+                                    )}
+                                </div>
+                            </div>
+                        </CardContent>
+                    </Card>
+                </div>
+
+                {/* ৩. আবহাওয়া কার্ড - Simple Design */}
+                <Card
+                    className="border cursor-pointer hover:border-primary/50 transition-colors"
+                    onClick={() => navigate("/abhaowa-purbabhas")}
+                >
+                    <CardContent className="p-4">
+                        {weatherLoading ? (
+                            <div className="flex items-center justify-center py-2">
+                                <Loader2 className="h-5 w-5 animate-spin text-muted-foreground mr-2" />
+                                <span className="text-sm text-muted-foreground">আবহাওয়া লোড হচ্ছে...</span>
+                            </div>
+                        ) : weatherError ? (
+                            <div className="flex items-center justify-between">
+                                <div className="flex items-center gap-3">
+                                    <Cloud className="h-8 w-8 text-gray-400" />
+                                    <div>
+                                        <p className="text-sm font-medium">আবহাওয়া</p>
+                                        <p className="text-xs text-muted-foreground">{weatherError}</p>
+                                    </div>
+                                </div>
+                                <ChevronRight className="h-4 w-4 text-muted-foreground" />
+                            </div>
+                        ) : weatherData ? (
+                            <div className="flex items-center justify-between">
+                                <div className="flex items-center gap-4">
+                                    {getWeatherIcon(weatherData.বর্তমান.অবস্থা)}
+                                    <div>
+                                        <div className="flex items-center gap-2">
+                                            <span className="text-2xl font-semibold">
+                                                {toBengaliNumber(weatherData.বর্তমান.তাপমাত্রা)}°
+                                            </span>
+                                            <span className="text-sm text-muted-foreground">
+                                                {weatherData.বর্তমান.অবস্থা}
+                                            </span>
+                                        </div>
+                                        <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                                            <MapPin className="h-3 w-3" />
+                                            <span>{weatherLocation}</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className="flex items-center gap-4">
+                                    <div className="text-right text-xs text-muted-foreground space-y-1">
+                                        <div className="flex items-center gap-1 justify-end">
+                                            <Droplets className="h-3 w-3" />
+                                            {toBengaliNumber(weatherData.বর্তমান.আর্দ্রতা)}%
+                                        </div>
+                                        <div className="flex items-center gap-1 justify-end">
+                                            <Wind className="h-3 w-3" />
+                                            {toBengaliNumber(weatherData.বর্তমান.বাতাসের_গতি)} কিমি/ঘ
+                                        </div>
+                                    </div>
+                                    <ChevronRight className="h-4 w-4 text-muted-foreground" />
+                                </div>
+                            </div>
+                        ) : null}
+                    </CardContent>
+                </Card>
+
+                {/* মূল ড্যাশবোর্ড মেনু - ৫ টি অপশন */}
+                <div
+                    className="relative rounded-xl p-4 -mx-4"
+                    style={{
+                        backgroundImage: 'url("/img/expert_dashboard_bg.png")',
+                        backgroundRepeat: 'no-repeat',
+                        backgroundPosition: 'bottom center',
+                        backgroundSize: 'cover'
+                    }}
+                >
+                    {/* Opacity overlay */}
+                    <div className="absolute inset-0 bg-background/70 rounded-xl"></div>
+
+                    <div className="relative z-10">
+                        <div className="flex items-center justify-between mb-4">
+                            <h2 className="text-xl font-bold">মূল মেনু</h2>
+                            <TTSButton
+                                text="বিশেষজ্ঞ সেবা মেনু। এখানে সামাজিক ফিড, পরামর্শ, কৃষি সংবাদ, আবহাওয়া পূর্বাভাস এবং রোগ নির্ণয় সেবা পাবেন।"
+                                size="icon"
+                                variant="ghost"
+                            />
+                        </div>
+
+                        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                            {dashboardItems.map((item) => {
+                                return (
+                                    <Card
+                                        key={item.id}
+                                        className="cursor-pointer transition-all duration-300 hover:shadow-xl hover:scale-105 border border-white/30 dark:border-white/10 bg-white/40 dark:bg-gray-800/40 backdrop-blur-md hover:bg-white/60 dark:hover:bg-gray-800/60"
+                                        onClick={() => handleNavigation(item.route)}
+                                    >
+                                        <CardContent className="p-6 text-center space-y-3">
+                                            <div className="mx-auto w-20 h-20 bg-white/70 dark:bg-gray-900/50 backdrop-blur-sm rounded-2xl shadow-lg flex items-center justify-center p-2 border border-white/50 dark:border-white/10">
+                                                <img
+                                                    src={item.image}
+                                                    alt={item.title}
+                                                    className="w-full h-full object-contain"
+                                                />
+                                            </div>
+
+                                            <div>
+                                                <h3 className="font-bold text-lg mb-1">{item.title}</h3>
+                                                <p className="text-sm text-muted-foreground mb-2 leading-relaxed">
+                                                    {item.description}
+                                                </p>
+                                                <Badge variant="secondary" className="text-xs bg-white/50 dark:bg-gray-700/50 backdrop-blur-sm">
+                                                    {item.stats}
+                                                </Badge>
+                                            </div>
+
+                                            <div className="mt-2">
+                                                <TTSButton
+                                                    text={`${item.title}। ${item.description}। ${item.stats}`}
+                                                    size="icon"
+                                                    variant="outline"
+                                                    className="bg-white/30 dark:bg-gray-800/30 backdrop-blur-sm border-white/40"
+                                                />
+                                            </div>
+                                        </CardContent>
+                                    </Card>
+                                );
+                            })}
+                        </div>
+                    </div>
+                </div>
+
+                {/* সাহায্য বিভাগ */}
+                <Card>
+                    <CardContent className="p-6">
+                        <div className="text-center space-y-3">
+                            <h3 className="text-lg font-semibold">সাহায্য প্রয়োজন?</h3>
+                            <p className="text-muted-foreground">
+                                কোন সমস্যা হলে আমাদের সাথে যোগাযোগ করুন
+                            </p>
+                            <div className="flex flex-col sm:flex-row gap-2 justify-center">
+                                <Badge variant="outline" className="py-2 px-4">
+                                    📞 হটলাইন: ১৬১২৩
+                                </Badge>
+                                <Badge variant="outline" className="py-2 px-4">
+                                    📱 SMS: ১৬১২৩
+                                </Badge>
+                            </div>
+                        </div>
+                    </CardContent>
+                </Card>
+            </main>
+        </div>
+    );
+};
+
+export default ExpertDashboard;

@@ -1,1 +1,403 @@
-# LANGAL1
+# 🌾 লাঙ্গল কৃষি সহায়ক
+
+<div align="center">
+  <img src="./public/img/Asset 3.png" alt="লাঙ্গল কৃষি সহায়ক লোগো" width="200" height="200">
+  
+  <h3>🇧🇩 বাংলাদেশের কৃষকদের জন্য স্মার্ট কৃষি সমাধান</h3>
+  
+  [![React](https://img.shields.io/badge/React-18.0-blue.svg)](https://reactjs.org/)
+  [![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue.svg)](https://www.typescriptlang.org/)
+  [![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.0-38B2AC.svg)](https://tailwindcss.com/)
+  [![Vite](https://img.shields.io/badge/Vite-5.0-646CFF.svg)](https://vitejs.dev/)
+</div>
+
+---
+
+## 📱 অ্যাপ্লিকেশন সম্পর্কে
+
+**লাঙ্গল কৃষি সহায়ক** একটি আধুনিক ওয়েব অ্যাপ্লিকেশন যা বাংলাদেশের কৃষকদের জন্য ডিজাইন করা হয়েছে। এটি কৃষকদের তাদের কৃষিকাজে সাহায্য করার জন্য বিভিন্ন স্মার্ট সমাধান প্রদান করে।
+
+### 🎯 মূল উদ্দেশ্য
+
+- কৃষকদের প্রযুক্তিগত সহায়তা প্রদান
+- ফসলের রোগ নির্ণয় ও চিকিৎসা
+- আবহাওয়া ভিত্তিক কৃষি পরিকল্পনা
+- বিশেষজ্ঞদের সাথে সরাসরি যোগাযোগ
+- কৃষি পণ্যের বাজার সুবিধা
+
+---
+
+## ✨ প্রধান বৈশিষ্ট্যসমূহ
+
+### 🌱 **রোগ নির্ণয় সিস্টেম**
+
+- ফসলের ছবি আপলোড করে রোগ শনাক্তকরণ
+- AI ভিত্তিক রোগ বিশ্লেষণ
+- চিকিৎসার পরামর্শ ও ওষুধের তালিকা
+- খরচ হিসাব ও প্রয়োগ নির্দেশনা
+
+### 🌾 **ফসল সুপারিশ**
+
+- এলাকা ভিত্তিক ফসলের পরামর্শ
+- মৌসুম অনুযায়ী সবচেয়ে লাভজনক ফসল
+- বিনিয়োগ ও মুনাফা হিসাব
+- চাষাবাদের সময়সূচী
+
+### 🌤️ **আবহাওয়া পরিকল্পনা**
+
+- ৭ দিনের আবহাওয়ার পূর্ভাবাস
+- আবহাওয়া অনুযায়ী কৃষিকাজের পরামর্শ
+- বৃষ্টিপাত ও তাপমাত্রার তথ্য
+- সেচ ও রোপণের সময় নির্ধারণ
+
+### 💬 **বিশেষজ্ঞ পরামর্শ**
+
+- কৃষি বিশেষজ্ঞদের সাথে সরাসরি যোগাযোগ
+- ভয়েস, টেক্সট ও ভিডিও কল সুবিধা
+- ২৪/৭ সাপোর্ট সিস্টেম
+- বিভিন্ন বিষয়ে বিশেষজ্ঞ পরামর্শ
+
+### 🛒 **কৃষি বাজার**
+
+- কৃষি যন্ত্রপাতি ভাড়া ও বিক্রয়
+- বীজ ও সারের দোকান
+- ফসল বিক্রয়ের প্ল্যাটফর্ম
+- দাম তুলনা ও বাজার তথ্য
+
+### 📰 **কৃষি সংবাদ**
+
+- সর্বশেষ কৃষি নীতি ও সংবাদ
+- বাজারের দামের আপডেট
+- সরকারি ভর্তুকি ও প্রকল্পের তথ্য
+- কৃষি প্রযুক্তির খবর
+
+### 📱 **সামাজিক নেটওয়ার্ক**
+
+- কৃষকদের মধ্যে অভিজ্ঞতা শেয়ারিং
+- সফল চাষাবাদের গল্প
+- প্রশ্ন-উত্তর সেকশন
+- কমিউনিটি সাপোর্ট
+
+### 🔊 **টেক্সট-টু-স্পিচ (TTS)** ⭐ নতুন!
+
+- **উচ্চমানের AI TTS**: Meta's MMS মডেল দিয়ে natural বাংলা উচ্চারণ
+- **দুটি মোড**: Hugging Face AI + ব্রাউজার TTS (অফলাইন)
+- **নিরক্ষর কৃষকদের জন্য**: সব কন্টেন্ট শুনে বুঝতে পারবেন
+- **ওয়ান-ক্লিক সাপোর্ট**: যেকোনো পোস্ট/নিউজ শুনুন
+- 📖 বিস্তারিত গাইড: [BANGLA_TTS_GUIDE.md](./BANGLA_TTS_GUIDE.md)
+
+---
+
+## 🚀 ইনস্টলেশন ও সেটআপ
+
+### প্রয়োজনীয় সফটওয়্যার
+
+- Node.js (18.0+)
+- npm বা yarn
+- Git
+
+### 🚀 টিম মেম্বারদের জন্য সেটআপ গাইড
+
+#### ১. Repository Fork/Clone করুন
+
+```bash
+# ফর্ক করার পর আপনার রিপোজিটরি ক্লোন করুন
+git clone https://github.com/YOUR_USERNAME/langal.git
+
+# অথবা original repository clone করুন
+git clone https://github.com/10Maruf/langal.git
+
+# প্রজেক্ট ডিরেক্টরিতে যান
+cd langal
+```
+
+#### ২. Frontend Setup
+
+```bash
+# Frontend dependencies install করুন
+npm install
+
+# .env ফাইল তৈরি করুন
+cp .env.example .env
+
+# .env ফাইলে API keys যোগ করুন (নিচে দেখুন)
+```
+
+#### ৩. Backend Setup (Laravel)
+
+```bash
+# Backend directory তে যান
+cd langal-backend
+
+# Composer dependencies install করুন
+composer install
+
+# .env ফাইল তৈরি করুন
+cp .env.example .env
+
+# Application key generate করুন
+php artisan key:generate
+
+# Database তৈরি করুন (XAMPP/MySQL)
+# MySQL-এ "langol_krishi_sahayak" নামে database তৈরি করুন
+
+# .env ফাইলে database config করুন:
+# DB_DATABASE=langol_krishi_sahayak
+# DB_USERNAME=root
+# DB_PASSWORD=
+
+# Database migrations run করুন
+php artisan migrate
+
+# Database seeding (optional)
+php artisan db:seed
+
+# Laravel backend start করুন
+php artisan serve
+# Backend চলবে: http://127.0.0.1:8000
+```
+
+#### ৪. Environment Variables Setup
+
+**Frontend (.env):**
+```env
+VITE_API_BASE=http://127.0.0.1:8000/api
+VITE_API_URL=http://127.0.0.1:8000
+VITE_HUGGINGFACE_API_KEY=your_huggingface_key
+VITE_GEMINI_API_KEY=your_gemini_key
+```
+
+**Backend (langal-backend/.env):**
+```env
+APP_URL=http://localhost:8000
+
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=langol_krishi_sahayak
+DB_USERNAME=root
+DB_PASSWORD=
+
+OPENAI_API_KEY=your_openai_key
+UNSPLASH_ACCESS_KEY=your_unsplash_key
+HUGGINGFACE_API_KEY=your_huggingface_key
+```
+
+#### ৫. চালু করুন
+
+**Terminal 1 - Backend:**
+```bash
+cd langal-backend
+php artisan serve
+```
+
+**Terminal 2 - Frontend:**
+```bash
+npm run dev
+```
+
+✅ Frontend: `http://localhost:5173`  
+✅ Backend: `http://127.0.0.1:8000`
+
+#### 🔑 API Keys কোথায় পাবেন?
+
+- **OpenAI**: https://platform.openai.com/api-keys
+- **Hugging Face**: https://huggingface.co/settings/tokens
+- **Gemini**: https://makersuite.google.com/app/apikey
+- **Unsplash**: https://unsplash.com/oauth/applications
+
+**⚠️ Important:** `.env` ফাইল কখনো commit করবেন না! এটা `.gitignore` এ আছে।
+
+### বিল্ড করার জন্য
+
+```bash
+# প্রোডাকশন বিল্ড তৈরি করুন
+npm run build
+
+# বিল্ড প্রিভিউ দেখুন
+npm run preview
+```
+
+---
+
+## 🛠️ ব্যবহৃত প্রযুক্তি
+
+### Frontend
+
+- **React 18** - ইউজার ইন্টারফেস লাইব্রেরি
+- **TypeScript** - টাইপ সেফটি
+- **Tailwind CSS** - স্টাইলিং ফ্রেমওয়ার্ক
+- **Shadcn/ui** - UI কম্পোনেন্ট লাইব্রেরি
+- **Lucide React** - আইকন লাইব্রেরি
+- **React Router** - রাউটিং সিস্টেম
+
+### Tools & Build
+
+- **Vite** - বিল্ড টুল ও ডেভ সার্ভার
+- **ESLint** - কোড লিন্টিং
+- **PostCSS** - CSS প্রসেসিং
+
+### APIs & Services
+
+- **Web Speech API** - টেক্সট-টু-স্পিচ
+- **Weather API** - আবহাওয়ার তথ্য
+- **AI/ML Models** - রোগ নির্ণয়
+
+---
+
+## 📂 প্রজেক্ট স্ট্রাকচার
+
+```
+langol-krishi-sahayak/
+├── public/                 # স্ট্যাটিক ফাইল
+│   ├── img/               # ছবি ও লোগো
+│   └── favicon.ico        # ফেভিকন
+├── src/
+│   ├── components/        # রিইউজেবল কম্পোনেন্ট
+│   │   ├── ui/           # বেসিক UI কম্পোনেন্ট
+│   │   ├── layout/       # লেআউট কম্পোনেন্ট
+│   │   ├── dashboard/    # ড্যাশবোর্ড কম্পোনেন্ট
+│   │   └── marketplace/  # বাজার কম্পোনেন্ট
+│   ├── pages/            # পেজ কম্পোনেন্ট
+│   ├── contexts/         # React Context
+│   ├── hooks/            # কাস্টম হুক
+│   ├── lib/              # ইউটিলিটি ফাংশন
+│   └── App.tsx           # মূল অ্যাপ কম্পোনেন্ট
+├── package.json          # ডিপেন্ডেন্সি তালিকা
+└── README.md            # এই ফাইল
+```
+
+---
+
+## 🎨 ইউজার ইন্টারফেস
+
+### ড্যাশবোর্ড ডিজাইন
+
+- **বড় আইকন**: নিরক্ষর কৃষকদের জন্য সহজ বোধগম্য
+- **বাংলা ভাষা**: সম্পূর্ণ বাংলায় ইন্টারফেস
+- **রেসপনসিভ**: মোবাইল ও ডেস্কটপ উভয়ে কাজ করে
+- **অ্যাক্সেসিবল**: TTS সহ প্রতিবন্ধী বান্ধব
+
+### কালার স্কিম
+
+- **প্রাইমারি**: সবুজ (কৃষির প্রতীক)
+- **সেকেন্ডারি**: নীল (প্রযুক্তির প্রতীক)
+- **অ্যাক্সেন্ট**: হলুদ (ফসলের প্রতীক)
+
+---
+
+## 👥 ব্যবহারকারীর ধরন
+
+### 🌾 কৃষক (Farmer)
+
+- মূল ব্যবহারকারী গ্রুপ
+- সরলীকৃত ইন্টারফেস
+- TTS সাপোর্ট
+- বড় বাটন ও আইকন
+
+### 👨‍🌾 কৃষি বিশেষজ্ঞ (Expert)
+
+- পরামর্শ প্রদানকারী
+- বিশ্লেষণ টুলস
+- রিপোর্ট জেনারেশন
+- কৃষক যোগাযোগ ব্যবস্থা
+
+### 🏪 ক্রেতা/বিক্রেতা (Customer)
+
+- কৃষি পণ্য ক্রয়-বিক্রয়
+- বাজার অ্যাক্সেস
+- দাম তুলনা
+- অর্ডার ট্র্যাকিং
+
+### 📊 ডেটা অপারেটর (Data Operator)
+
+- তথ্য যাচাইকরণ
+- কৃষক রেজিস্ট্রেশন
+- ডেটা এন্ট্রি ও আপডেট
+- রিপোর্ট তৈরি
+
+---
+
+## 🌟 ভবিষ্যত পরিকল্পনা
+
+### Phase 1 (বর্তমান)
+
+- ✅ বেসিক ড্যাশবোর্ড
+- ✅ রোগ নির্ণয় সিস্টেম
+- ✅ বিশেষজ্ঞ পরামর্শ
+- ✅ TTS ইন্টিগ্রেশন
+
+### Phase 2 (আগামী ৩ মাস)
+
+- 🔄 AI উন্নতিকরণ
+- 🔄 মোবাইল অ্যাপ
+- 🔄 অফলাইন সাপোর্ট
+- 🔄 SMS ইন্টিগ্রেশন
+
+### Phase 3 (আগামী ৬ মাস)
+
+- 📱 IoT সেন্সর ইন্টিগ্রেশন
+- 🚁 ড্রোন মনিটরিং
+- 💰 মাইক্রো ক্রেডিট সিস্টেম
+- 🏦 ব্যাংকিং ইন্টিগ্রেশন
+
+---
+
+## 🤝 অবদান রাখুন
+
+আমরা কমিউনিটির অবদানকে স্বাগত জানাই! আপনি যেভাবে সাহায্য করতে পারেন:
+
+### কোড অবদান
+
+1. এই রিপোজিটরি ফর্ক করুন
+2. নতুন ব্রাঞ্চ তৈরি করুন (`git checkout -b feature/amazing-feature`)
+3. আপনার পরিবর্তন কমিট করুন (`git commit -m 'Add amazing feature'`)
+4. ব্রাঞ্চে পুশ করুন (`git push origin feature/amazing-feature`)
+5. পুল রিকোয়েস্ট তৈরি করুন
+
+### অন্যান্য উপায়
+
+- 🐛 বাগ রিপোর্ট করুন
+- 💡 নতুন ফিচার সাজেস্ট করুন
+- 📖 ডকুমেন্টেশন উন্নত করুন
+- 🌐 অনুবাদে সাহায্য করুন
+
+---
+
+## 📞 যোগাযোগ
+
+### ডেভেলপমেন্ট টিম
+
+- **প্রজেক্ট লিড**: [আপনার নাম]
+- **GitHub**: [@10Maruf](https://github.com/10Maruf)
+- **ইমেইল**: [your-email@example.com]
+
+### সাপোর্ট
+
+- **ইস্যু ট্র্যাকার**: [GitHub Issues](https://github.com/10Maruf/langol-krishi-sahayak/issues)
+- **ডিসকাশন**: [GitHub Discussions](https://github.com/10Maruf/langol-krishi-sahayak/discussions)
+
+---
+
+## 📄 লাইসেন্স
+
+এই প্রজেক্টটি MIT লাইসেন্সের অধীনে লাইসেন্সপ্রাপ্ত। বিস্তারিত জানতে [LICENSE](LICENSE) ফাইল দেখুন।
+
+---
+
+## 🙏 কৃতজ্ঞতা
+
+- বাংলাদেশের কৃষকদের অনুপ্রেরণার জন্য ধন্যবাদ
+- React ও TypeScript কমিউনিটির জন্য কৃতজ্ঞতা
+- Shadcn/ui এর চমৎকার UI কম্পোনেন্টের জন্য
+- সকল কন্ট্রিবিউটরদের প্রতি আন্তরিক ধন্যবাদ
+
+---
+
+<div align="center">
+  <strong>🌾 বাংলাদেশের কৃষিতে প্রযুক্তির ব্যবহার করে কৃষকদের জীবনযাত্রার মান উন্নয়নে আমাদের ছোট্ট অবদান 🌾</strong>
+  
+  <br><br>
+  
+  Made with ❤️ for Bangladesh Farmers
+</div>
